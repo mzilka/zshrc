@@ -1,6 +1,9 @@
-# @author     Sebastian Tramp <mail@sebastian.tramp.name>
-# @license    http://opensource.org/licenses/gpl-license.php
-# @adjusted   Martin Zilka
+# @author       Martin Zilka
+# # @license    http://opensource.org/licenses/gpl-license.php
+#
+# # original author  Sebastian Tramp <mail@sebastian.tramp.name>
+# # https://github.com/seebi/zshrc.git
+#
 # alias definitions which can be edited/modified with 'aedit'
 #
 
