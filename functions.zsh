@@ -292,7 +292,6 @@ show-archive() {
                         *.zip)         unzip -l  $1 ;;
                         *.bz2)         bzless    $1 ;;
                         *)
-                        *)
                         echo "'$1' Error. Please go away" ;;
                 esac
         else
