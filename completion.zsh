@@ -1,6 +1,9 @@
-# @author     Sebastian Tramp <mail@sebastian.tramp.name>
-# @license    http://opensource.org/licenses/gpl-license.php
+# @author       Martin Zilka
+# # @license    http://opensource.org/licenses/gpl-license.php
 #
+# # original author  Sebastian Tramp <mail@sebastian.tramp.name>
+# # https://github.com/seebi/zshrc.git
+
 # tab completion configuration
 #
 

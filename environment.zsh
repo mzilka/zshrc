@@ -1,5 +1,8 @@
-# @author     Sebastian Tramp <mail@sebastian.tramp.name>
+# @author       Martin Zilka
 # @license    http://opensource.org/licenses/gpl-license.php
+#
+# original author  Sebastian Tramp <mail@sebastian.tramp.name>
+# https://github.com/seebi/zshrc.git
 #
 # Basic environment settings related to the zsh compiliation (not private)
 

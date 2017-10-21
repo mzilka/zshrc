@@ -1,26 +1,11 @@
-# @author     Sebastian Tramp <mail@sebastian.tramp.name>
+# @author       Martin Zilka
 # @license    http://opensource.org/licenses/gpl-license.php
+#
+# original author  Sebastian Tramp <mail@sebastian.tramp.name>
+# https://github.com/seebi/zshrc.git
 #
 # shell options as history size, keyindings, etc
 #
-
-#export GREP_OPTIONS='--binary-files=without-match --ignore-case'
-
-# keybindings Strg+v is your friend :-)
-#bindkey "^[[1;5D" .backward-word
-#bindkey "^[[1;5C" .forward-word
-#bindkey "^[[1;6D" backward-delete-word
-#bindkey "^[[1;6C" delete-word
-# alt+left (on mac) deletes word
-#bindkey "^[" backward-kill-word
-# fn-left
-#bindkey "^[[H" .backward-word
-# fn-right
-#bindkey "^[[F" .forward-word
-
-# arrow up/down searches in history if line is already started
-#bindkey '^[[A' up-line-or-search
-#bindkey '^[[B' down-line-or-search
 
 # History Settings (big history for use with many open shells and no dups)
 # Different History files for root and standard user
