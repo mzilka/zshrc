@@ -62,13 +62,6 @@ alias -g C='| wc -l'
 alias -g open="xdg-open"
 ##### suffix aliases (mostly mapped to open which runs the gnome/kde default app)
 
-alias -s 1="man -l"
-alias -s 2="man -l"
-alias -s 3="man -l"
-alias -s 4="man -l"
-alias -s 5="man -l"
-alias -s 6="man -l"
-alias -s 7="man -l"
 alias -s pdf="open"
 alias -s PDF="open"
 
@@ -127,7 +120,6 @@ alias -s ppt="open"
 alias -s pptx="open"
 alias -s odp="open"
 
-alias -s plist="plutil"
 alias -s log="vim"
 alias -s txt="vim"
 
