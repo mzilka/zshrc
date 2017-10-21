@@ -32,6 +32,7 @@ alias p=' ps aux | grep'
 alias g='git'
 alias gc='git commit'
 alias gs='git status'
+alias gch='git checkout'
 alias d=' dirs -v'
 
 alias cd=' cd'
