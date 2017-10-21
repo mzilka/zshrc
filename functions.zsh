@@ -181,3 +181,159 @@ backward-delete-to-slash () {
 zle -N backward-delete-to-slash
 # bind to control Y
 bindkey "^Y" backward-delete-to-slash
+# mz import
+#Function Usage: doc packagename
+        doc() { cd /usr/share/doc/$1 && ls }
+        _doc() { _files -W /usr/share/doc -/ }
+        compdef _doc doc
+#Vyhladavanie v history
+selhist() {
+        emulate -L zsh
+        local TAB=$'\t';
+        (( $# < 1 )) && {
+                echo "Usage: $0 command"
+                return 1
+        };
+        cmd=(${(f)"$(grep -w $1 $HISTFILE | sort | uniq | pr -tn)"})
+        print -l $cmd | less -F
+        echo -n "enter number of desired command [1 - $(( ${#cmd[@]} - 1 ))]: "
+        local answer
+        read answer
+        print -z "${cmd[$answer]#*$TAB}"
+}
+# mkdir && cd
+        mcd() { mkdir -p "$@"; cd "$@" }  # mkdir && cd
+# cd && ls
+        cl() { cd $1 && la }
+# make screenshot of current desktop (use 'import' from ImageMagic)
+# sshot() {
+#[[ ! -d ~/shots  ]] && mkdir ~/shots
+#cd ~/shots ; sleep 5 ; import -window root -depth 8 -quality 80 `date "
+#cd ~/shots ; sleep 5; import -window root shot_`date --iso-8601=m`.jpg
+#}
+
+# grep the history
+greph () { history 0 | grep $1 }
+(grep --help 2>/dev/null |grep -- --color) >/dev/null && \
+
+# jump between directories
+# # Copyright 2005 Nikolai Weibull <nikolai@bitwi.se>
+# # notice: option AUTO_PUSHD has to be set
+        d(){
+        emulate -L zsh
+        autoload -U colors
+        local color=$fg_bold[blue]
+        integer i=0
+        dirs -p | while read dir; do
+        local num="${$(printf "%-4d " $i)/ /.}"
+        printf " %s  $color%s$reset_color\n" $num $dir
+        (( i++ ))
+        done
+        integer dir=-1
+        read -r 'dir?Jump to directory: ' || return
+        (( dir == -1 )) && return
+        if (( dir < 0 || dir >= i )); then
+        echo d: no such directory stack entry: $dir
+        return 1
+        fi
+        cd ~$dir && la
+}
+# Usage: simple-extract <file>
+        simple-extract () {
+        if [[ -f $1 ]]
+        then
+                case $1 in
+                        *.tar.bz2)  bzip2 -v -d $1      ;;
+                        *.tar.gz)   tar -xvzf   $1      ;;
+                        *.rar)      unrar       $1      ;;
+                        *.deb)      ar -x       $1      ;;
+                        *.bz2)      bzip2 -d    $1      ;;
+                        *.lzh)      lha x       $1      ;;
+                        *.gz)       gunzip -d   $1      ;;
+                        *.tar)      tar -xvf    $1      ;;
+                        *.tgz)      gunzip -d   $1      ;;
+                        *.tbz2)     tar -jxvf   $1      ;;
+                        *.zip)      unzip       $1      ;;
+                        *.Z)        uncompress  $1      ;;
+                        *)          echo "'$1' Error. Please go away" ;;
+                esac
+                        else
+                                    echo "'$1' is not a valid file"
+ fi
+}
+# Usage: smartcompress <file> (<type>)
+# Description: compresses files or a directory.  Defaults to tar.gz
+smartcompress() {
+        if [ $2 ]; then
+                case $2 in
+                        tgz | tar.gz)   tar -zcvf$1.$2 $1 ;;
+                        tbz2 | tar.bz2) tar -jcvf$1.$2 $1 ;;
+                        tar.Z)          tar -Zcvf$1.$2 $1 ;;
+                        tar)            tar -cvf$1.$2  $1 ;;
+                        gz | gzip)      gzip           $1 ;;
+                        bz2 | bzip2)    bzip2          $1 ;;
+                        *)
+                        echo "Error: $2 is not a valid compression type"
+                        ;;
+                esac
+        else
+                smartcompress $1 tar.gz
+        fi
+}
+# Usage: show-archive <archive>
+# Description: view archive without unpack
+show-archive() {
+        if [[ -f $1 ]]
+        then
+                case $1 in
+                        *.tar.gz)      gunzip -c $1 | tar -tf - -- ;;
+                        *.tar)         tar -tf   $1 ;;
+                        *.tgz)         tar -ztf  $1 ;;
+                        *.zip)         unzip -l  $1 ;;
+                        *.bz2)         bzless    $1 ;;
+                        *)
+                        *)
+                        echo "'$1' Error. Please go away" ;;
+                esac
+        else
+                echo "'$1' is not a valid archive"
+        fi
+}
+# Use 'view' to read manpages, if u want colors, regex - search, ...
+# # like vi(m).
+# # It's shameless stolen from <http://www.vim.org/tips/tip.php?tip_id=167>
+vman() { man $* | col -b | view -c 'set ft=man nomod nolist' - }
+
+status() {
+        print ""
+        print "Date..: "$(date "+%Y-%m-%d %H:%M:%S")""
+        print "Shell.: Zsh $ZSH_VERSION (PID = $$, $SHLVL nests)"
+        print "Term..: $TTY ($TERM), $BAUD bauds, $COLUMNS x $LINES cars"
+        print "Login.: $LOGNAME (UID = $EUID) on $HOST"
+        print "System: $(cat /etc/[A-Za-z]*[_-][rv]e[lr]*)"
+        print "Uptime:$(uptime)"
+        print ""
+}
+#--- FUNCTION ----------------------------------------------------------------
+# NAME: sla_get_logs
+# DESCRIPTION: Automatically downloads docker.log & SystemOut.log for
+# given environment
+# PARAMETERS: Account GCSC
+# RETURNS: docker.log & SystemOut.log with timestamp in local folder
+#-------------------------------------------------------------------------------
+sla_get_logs () {
+ACC=$*
+TST=`TZ=UTC date +"%Y%m%d-%H%M_UTC"`
+HST=`ssh $ACC-ee 'hostname|cut -d"-" -f3'`
+
+ssh $ACC-ee "sudo docker cp xeng:/home/cobalt/xeng/cobalt/log/docker.log /tmp/docker-$HST-ee-xeng-$TST.log"
+ssh $ACC-ee "sudo zip /tmp/docker-$HST-ee-xeng-$TST.log.zip /tmp/docker-$HST-ee-xeng-$TST.log"
+ssh $ACC-ee "sudo chmod 755 /tmp/docker-$HST-ee-xeng-$TST.log.zip"
+rsync --partial --progress --rsh=ssh $ACC-ee:/tmp/docker-$HST-ee-xeng-$TST.log.zip .
+ssh $ACC-ee "sudo rm /tmp/docker-$HST-ee-xeng-$TST.log.zip /tmp/docker-$HST-ee-xeng-$TST.log"
+
+ssh $ACC-bpm "sudo zip /tmp/SystemOut-$HST-bpm-$TST.log.zip /opt/IBM/WebSphere/AppServer/profiles/Node1Profile/logs/SingleClusterMember1/SystemOut.log"
+ssh $ACC-bpm "sudo chmod 755 /tmp/SystemOut-$HST-bpm-$TST.log.zip"
+rsync --partial --progress --rsh=ssh $ACC-bpm:/tmp/SystemOut-$HST-bpm-$TST.log.zip .
+ssh $ACC-bpm "sudo rm /tmp/SystemOut-$HST-bpm-$TST.log.zip"
+}
