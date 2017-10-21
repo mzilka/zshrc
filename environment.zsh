@@ -15,4 +15,5 @@ mkdir -p $ZSH_CACHE
 export PATH=/usr/local/sbin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/.local/sbin:$PATH
-
+#locale
+export LC_ALL=en_US.UTF-8
